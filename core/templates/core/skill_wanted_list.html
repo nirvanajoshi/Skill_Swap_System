@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Skills I Want · SkillSwap{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+  <div>
+    <h1 class="h3 text-swap-teal mb-1">Skills I Want</h1>
+    <p class="text-muted small mb-0">What you'd like to learn — your side of the trade.</p>
+  </div>
+  <a href="{% url 'skill_wanted_create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add Skill I Want
+  </a>
+</div>
+
+{% if skills %}
+  <div class="row g-3">
+    {% for skill in skills %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card card-swap h-100">
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-swap-teal text-white"
+                    style="width: 34px; height: 34px;">
+                <i class="bi bi-mortarboard" aria-hidden="true"></i>
+              </span>
+              <h2 class="h5 card-title text-swap-teal mb-0">{{ skill.skill }}</h2>
+            </div>
+            <p class="card-text text-muted small flex-grow-1">{{ skill.description|truncatewords:25 }}</p>
+            <div class="d-flex gap-2">
+              <a href="{% url 'skill_wanted_update' skill.pk %}" class="btn btn-sm btn-outline-swap-teal">
+                <i class="bi bi-pencil me-1" aria-hidden="true"></i>Edit
+              </a>
+              <a href="{% url 'skill_wanted_delete' skill.pk %}" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash me-1" aria-hidden="true"></i>Delete
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card card-swap">
+    <div class="card-body text-center p-5">
+      <span class="icon-badge mb-3"><i class="bi bi-mortarboard" aria-hidden="true"></i></span>
+      <h2 class="h5 text-swap-teal mb-1">No skills on your wishlist yet</h2>
+      <p class="text-muted small mb-3">Add a skill you'd love to learn to start swapping.</p>
+      <a href="{% url 'skill_wanted_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1" aria-hidden="true"></i>Add Your First Skill
+      </a>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

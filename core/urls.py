@@ -1,7 +1,12 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
+    # Root: send logged-in users to the app hub; anonymous users are
+    # then redirected to the login page by the view's login_required.
+    path('', RedirectView.as_view(pattern_name='swap_request_list'), name='home'),
+
     path('register/', views.register, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

@@ -1,0 +1,52 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Skill · SkillSwap{% else %}Add a Skill · SkillSwap{% endif %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-sm-9 col-md-8 col-lg-6">
+    <div class="card card-swap">
+      <div class="card-body p-4 p-sm-5">
+
+        <div class="mb-4">
+          <h1 class="h3 text-swap-teal mb-1">{% if form.instance.pk %}Edit Skill{% else %}Add a New Skill{% endif %}</h1>
+          <p class="text-muted small mb-0">
+            {% if form.instance.pk %}Update the details of this skill.{% else %}Tell your community what you can teach.{% endif %}
+          </p>
+        </div>
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2 small" role="alert">
+            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" class="form-swap" novalidate>
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="{{ form.skill.id_for_label }}" class="form-label">Skill name</label>
+            {{ form.skill }}
+            {{ form.skill.errors }}
+          </div>
+
+          <div class="mb-4">
+            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+            {{ form.description }}
+            {{ form.description.errors }}
+            <div class="form-text">What you can teach, and what a beginner should expect.</div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-lg me-1" aria-hidden="true"></i>Save
+            </button>
+            <a href="{% url 'skill_offered_list' %}" class="btn btn-outline-swap-teal">Cancel</a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

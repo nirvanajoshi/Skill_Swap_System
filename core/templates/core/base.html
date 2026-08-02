@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SkillSwap{% endblock %}</title>
+
+  <!-- Bootstrap 5 + Icons via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    /* ===== SkillSwap theme ===== */
+    :root {
+      /* Brand palette */
+      --swap-coral: #E76F51;
+      --swap-teal: #264653;
+      --swap-cream: #FDF6EC;
+
+      /* Theme Bootstrap's primary color to warm coral */
+      --bs-primary: #E76F51;
+      --bs-primary-rgb: 231, 111, 81;
+      --bs-primary-text-emphasis: #9c3a21;
+      --bs-primary-bg-subtle: #fde9e2;
+      --bs-primary-border-subtle: #f7c6b6;
+
+      --bs-body-bg: #FDF6EC;
+      --bs-body-color: #2f3e3d;
+      --bs-border-radius: 0.5rem;
+
+      --bs-link-color: #E76F51;
+      --bs-link-color-rgb: 231, 111, 81;
+      --bs-link-hover-color: #cf5a3c;
+      --bs-link-hover-color-rgb: 207, 90, 60;
+    }
+
+    body {
+      background-color: var(--swap-cream);
+    }
+
+    /* Coral primary buttons (Bootstrap 5.3 hardcodes static colors on
+       .btn-primary, so the whole component palette is re-themed here) */
+    .btn-primary {
+      --bs-btn-color: #fff;
+      --bs-btn-bg: #E76F51;
+      --bs-btn-border-color: #E76F51;
+      --bs-btn-hover-bg: #d85b3c;
+      --bs-btn-hover-border-color: #d05334;
+      --bs-btn-focus-shadow-rgb: 231, 111, 81;
+      --bs-btn-active-bg: #c95031;
+      --bs-btn-active-border-color: #bf4a2d;
+      --bs-btn-disabled-bg: #e58d76;
+      --bs-btn-disabled-border-color: #e58d76;
+    }
+    .btn-outline-primary {
+      --bs-btn-color: #E76F51;
+      --bs-btn-border-color: #E76F51;
+      --bs-btn-hover-bg: #E76F51;
+      --bs-btn-hover-border-color: #E76F51;
+      --bs-btn-hover-color: #fff;
+      --bs-btn-focus-shadow-rgb: 231, 111, 81;
+      --bs-btn-active-bg: #d05334;
+      --bs-btn-active-border-color: #d05334;
+      --bs-btn-active-color: #fff;
+    }
+
+    /* Buttons: slightly bolder labels for readability */
+    .btn { font-weight: 600; }
+
+    /* Brand utilities */
+    .text-swap-teal { color: var(--swap-teal) !important; }
+    .bg-swap-teal { background-color: var(--swap-teal) !important; }
+    .text-swap-coral { color: var(--swap-coral) !important; }
+    .bg-swap-coral { background-color: var(--swap-coral) !important; }
+
+    /* Navbar */
+    .navbar-swap { background-color: var(--swap-teal); }
+    .navbar-swap .navbar-brand { color: #fff; font-weight: 700; letter-spacing: 0.2px; }
+    .navbar-swap .navbar-brand:hover { color: #fff; }
+    .navbar-swap .navbar-nav .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+      border-radius: 0.5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .navbar-swap .navbar-nav .nav-link:hover,
+    .navbar-swap .navbar-nav .nav-link.active {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    .navbar-swap .navbar-toggler { border-color: rgba(255, 255, 255, 0.4); }
+    .navbar-swap .navbar-toggler:focus { box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.2); }
+
+    /* Teal secondary buttons */
+    .btn-swap-teal {
+      --bs-btn-color: #fff;
+      --bs-btn-bg: #264653;
+      --bs-btn-border-color: #264653;
+      --bs-btn-hover-color: #fff;
+      --bs-btn-hover-bg: #1e3a45;
+      --bs-btn-hover-border-color: #1e3a45;
+      --bs-btn-focus-shadow-rgb: 38, 70, 83;
+      --bs-btn-active-color: #fff;
+      --bs-btn-active-bg: #19323c;
+      --bs-btn-active-border-color: #19323c;
+    }
+    .btn-outline-swap-teal {
+      --bs-btn-color: #264653;
+      --bs-btn-border-color: #264653;
+      --bs-btn-hover-bg: #264653;
+      --bs-btn-hover-border-color: #264653;
+      --bs-btn-hover-color: #fff;
+      --bs-btn-focus-shadow-rgb: 38, 70, 83;
+      --bs-btn-active-bg: #1e3a45;
+      --bs-btn-active-border-color: #1e3a45;
+      --bs-btn-active-color: #fff;
+    }
+
+    /* White cards with soft shadow + rounded corners */
+    .card-swap {
+      border: 0;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Decorative circle icon for page headers */
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: rgba(231, 111, 81, 0.14);
+      color: var(--swap-coral);
+      font-size: 1.35rem;
+    }
+
+    /* Django-rendered form fields, styled like Bootstrap form-control */
+    .form-swap input[type="text"],
+    .form-swap input[type="password"],
+    .form-swap input[type="email"],
+    .form-swap input[type="number"],
+    .form-swap input[type="url"],
+    .form-swap input[type="search"],
+    .form-swap select,
+    .form-swap textarea {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--bs-body-color);
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #e3d7c4;
+      appearance: none;
+      border-radius: 0.5rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .form-swap select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+      padding-right: 2.5rem;
+    }
+    .form-swap input:focus,
+    .form-swap select:focus,
+    .form-swap textarea:focus {
+      border-color: var(--swap-coral);
+      outline: 0;
+      box-shadow: 0 0 0 0.25rem rgba(231, 111, 81, 0.15);
+    }
+
+    /* Django form errors */
+    .form-text ul {
+      padding-left: 1rem;
+      margin-bottom: 0;
+    }
+    .errorlist {
+      list-style: none;
+      margin: 0.35rem 0 0;
+      padding: 0;
+    }
+    .errorlist li {
+      color: #dc3545;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar navbar-expand-lg navbar-swap sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-inline-flex align-items-center"
+         href="{% if user.is_authenticated %}{% url 'profile_edit' %}{% else %}{% url 'login' %}{% endif %}">          <span class="me-2 d-inline-flex align-items-center justify-content-center rounded-circle bg-swap-coral text-white"
+                style="width: 30px; height: 30px; font-size: 0.9rem;">
+            <i class="bi bi-arrow-left-right" aria-hidden="true"></i>
+          </span>
+        SkillSwap
+      </a>
+
+      {% if user.is_authenticated %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#mainNav" aria-controls="mainNav"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'profile_edit' %}active{% endif %}"
+               href="{% url 'profile_edit' %}">
+              <i class="bi bi-person me-1" aria-hidden="true"></i>My Profile
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'skill_offered_list' %}active{% endif %}"
+               href="{% url 'skill_offered_list' %}">
+              <i class="bi bi-lightning-charge me-1" aria-hidden="true"></i>Skills I Offer
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'skill_wanted_list' %}active{% endif %}"
+               href="{% url 'skill_wanted_list' %}">
+              <i class="bi bi-mortarboard me-1" aria-hidden="true"></i>Skills I Want
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'swap_request_list' %}active{% endif %}"
+               href="{% url 'swap_request_list' %}">
+              <i class="bi bi-arrow-repeat me-1" aria-hidden="true"></i>Swap Requests
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+              <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Logout
+            </a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- ===== Main content ===== -->
+  <main class="container flex-grow-1 mt-4 mb-5">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags %}{{ message.tags }}{% else %}info{% endif %} alert-dismissible fade show shadow-sm"
+             role="alert">
+          <i class="bi bi-info-circle me-1" aria-hidden="true"></i>{{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="py-4 text-center text-muted">
+    <div class="container">
+      <small>
+        <i class="bi bi-arrow-left-right me-1 text-swap-coral" aria-hidden="true"></i>
+        SkillSwap — trade skills, not money
+      </small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
